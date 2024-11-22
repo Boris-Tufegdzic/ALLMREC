@@ -14,7 +14,7 @@ from pre_train.sasrec.model import SASRec
 
 def load_checkpoint(recsys, pre_trained):
     # # For kaggle
-    base_dir = '/kaggle/input/allmrec6/pytorch/default/1/A-LLMRec-master/'
+    base_dir = '/kaggle/working/ALLMREC/'
     #path = base_dir + f'pre_train/{recsys}/{pre_trained}/'
     path = base_dir + "pre_train/sasrec/saved_models/"
     
