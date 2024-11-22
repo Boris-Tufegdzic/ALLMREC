@@ -123,7 +123,7 @@ if __name__ == '__main__':
             #         print()
             # torch.save([model.kwargs, model.state_dict()], os.path.join(folder, fname))
 
-            base_dir = '/kaggle/input/allmrec8/pytorch/default/1/A-LLMRec-master'
+            base_dir = '/kaggle/working/ALLMREC'
             folder = base_dir + '/pre_train/sasrec/saved_models/' 
             if not os.path.exists(folder):
                 os.makedirs(folder)  # Ensure the folder exists
