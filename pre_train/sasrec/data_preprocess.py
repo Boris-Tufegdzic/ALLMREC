@@ -88,8 +88,8 @@ def preprocess(fname):
         User[userid].sort(key=lambda x: x[0])
         
     print(usernum, itemnum)
-    f = open('/kaggle/input/yelp-philadelphia/philadelphia/reviews.txt', 'w')
-    #f = open(f'/kaggle/working/ALLMREC/data/yelp/philadelphia/reviews.txt', 'w')
+    #f = open('/kaggle/input/yelp-philadelphia/philadelphia/reviews.txt', 'w')
+    f = open(f'/kaggle/working/ALLMREC/data/yelp/philadelphia/reviews.txt', 'w')
     for user in User.keys():
         for i in User[user]:
             f.write('%d %d\n' % (user, i[1]))
