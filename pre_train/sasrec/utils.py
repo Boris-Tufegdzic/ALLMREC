@@ -161,7 +161,7 @@ def data_partition(fname, path=None):
     # else:
     #     f = open(path, 'r')
 
-    f = open('/kaggle/input/yelp-philadelphia/philadelphia/reviews.txt', 'r')
+    f = open('/kaggle/input/yelpdata/philadelphia/reviews.txt', 'r')
 
     for line in f:
         u, i = line.rstrip().split(' ')
