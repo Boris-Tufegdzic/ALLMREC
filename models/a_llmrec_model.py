@@ -41,7 +41,7 @@ class A_llmrec_model(nn.Module):
 
 
         # # For kaggle
-        base_dir = '/kaggle/input/allmrec8/pytorch/default/1/A-LLMRec-master'
+        base_dir = '/kaggle/working/ALLMREC/'
         file_path = os.path.join(base_dir, 'data/yelp/yelp_text_name_dict.json.gz')
 
         with open(file_path, 'rb') as ft:
@@ -95,7 +95,7 @@ class A_llmrec_model(nn.Module):
             
     def save_model(self, args, epoch1=None, epoch2=None):
         #kaggle
-        out_dir = '/kaggle/input/allmrec8/pytorch/default/1/A-LLMRec-master/pre_train/sasrec/saved_models/'
+        out_dir = '/kaggle/working/ALLMREC/pre_train/sasrec/saved_models/'
         create_dir(out_dir)
         out_dir += f'yelp_allmrec_{epoch1}_'
         # if not os.path.exists(out_dir):
@@ -121,7 +121,7 @@ class A_llmrec_model(nn.Module):
             
     def load_model(self, args, phase1_epoch=None, phase2_epoch=None):
         #kaggle
-        out_dir = f'/kaggle/input/allmrec8/pytorch/default/1/A-LLMRec-master/pre_train/sasrec/saved_models/yelp_allmrec_{phase1_epoch}_'
+        out_dir = f'/kaggle/working/ALLMREC/pre_train/sasrec/saved_models/yelp_allmrec_{phase1_epoch}_'
         #out_dir = f'./models/saved_models/yelp_allmrec_{phase1_epoch}_'
         #out_dir = f'/content/drive/MyDrive/saved_models/allmrec/yelp_allmrec_{phase1_epoch}_'
 
