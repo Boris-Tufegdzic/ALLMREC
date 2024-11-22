@@ -88,8 +88,15 @@ def preprocess(fname):
         User[userid].sort(key=lambda x: x[0])
         
     print(usernum, itemnum)
+
+    # Define the directory path
+    dir_path = '/kaggle/working/ALLMREC/data/yelp/philadelphia/'
+
+    # Ensure the directory exists
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
     #f = open('/kaggle/input/yelp-philadelphia/philadelphia/reviews.txt', 'w')
-    f = open(f'/kaggle/working/ALLMREC/data/yelp/philadelphia/reviews.txt', 'w')
+    f = open(f'{dir_path}/reviews.txt', 'w')
     for user in User.keys():
         for i in User[user]:
             f.write('%d %d\n' % (user, i[1]))
