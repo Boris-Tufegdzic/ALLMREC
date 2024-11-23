@@ -22,7 +22,7 @@ def preprocess(fname):
     User = dict()
     review_dict = {}
 
-    base_dir = '/kaggle/input/yelpdata/philadelphia'
+    base_dir = '/kaggle/input/yelpdata1/philadelphia'
     user_path = base_dir + f'/philadelphia_users.json'
     business_path = base_dir + f'/philadelphia_businesses.json'
     review_path = base_dir + f'/philadelphia_reviews.json'
