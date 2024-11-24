@@ -254,8 +254,8 @@ class A_llmrec_model(nn.Module):
             gt_loss += matching_loss.item()
             rc_loss += reconstruction_loss.item()
             text_rc_loss += text_reconstruction_loss.item()
-            
-        print("loss in epoch {}/{} iteration {}/{}: {} / BPR loss: {} / Matching loss: {} / Item reconstruction: {} / Text reconstruction: {}".format(epoch, total_epoch, step, total_step, mean_loss/iterss, bpr_loss/iterss, gt_loss/iterss, rc_loss/iterss, text_rc_loss/iterss))
+        if step%500 == 0 or step == 1:
+            print("loss in epoch {}/{} iteration {}/{}: {} / BPR loss: {} / Matching loss: {} / Item reconstruction: {} / Text reconstruction: {}".format(epoch, total_epoch, step, total_step, mean_loss/iterss, bpr_loss/iterss, gt_loss/iterss, rc_loss/iterss, text_rc_loss/iterss))
     
     def make_interact_text(self, interact_ids, interact_max_num):
         interact_item_titles_ = self.find_item_text(interact_ids, title_flag=True, description_flag=False)
