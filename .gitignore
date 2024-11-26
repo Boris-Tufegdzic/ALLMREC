@@ -1,13 +1,13 @@
 # models
-*.pth
+#*.pth
 *.pt
-*.json.gz
+#*.json.gz
 *.bin
 *.model
 
 # data
 *.json
-*.txt
+#*.txt
 */data/*
 
 # etc, cache

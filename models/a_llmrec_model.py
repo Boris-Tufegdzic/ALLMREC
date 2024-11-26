@@ -97,7 +97,7 @@ class A_llmrec_model(nn.Module):
         #kaggle
         out_dir = '/kaggle/working/ALLMREC/pre_train/sasrec/saved_models/'
         create_dir(out_dir)
-        out_dir += f'yelp_allmrec_{epoch1}_'
+        out_dir += f'yelp_allmrec_{epoch1}/'
         # if not os.path.exists(out_dir):
         #     os.makedirs(out_dir)
         # #colab
@@ -121,7 +121,8 @@ class A_llmrec_model(nn.Module):
             
     def load_model(self, args, phase1_epoch=None, phase2_epoch=None):
         #kaggle
-        out_dir = f'/kaggle/working/ALLMREC/pre_train/sasrec/saved_models/yelp_allmrec_{phase1_epoch}_'
+        out_dir = f'/kaggle/input/yelp_allmrec_{phase1_epoch}/'
+        #out_dir = f'/kaggle/working/ALLMREC/pre_train/sasrec/saved_models/yelp_allmrec_{phase1_epoch}/'
         #out_dir = f'./models/saved_models/yelp_allmrec_{phase1_epoch}_'
         #out_dir = f'/content/drive/MyDrive/saved_models/allmrec/yelp_allmrec_{phase1_epoch}_'
 
