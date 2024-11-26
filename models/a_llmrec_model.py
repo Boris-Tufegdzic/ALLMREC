@@ -96,8 +96,6 @@ class A_llmrec_model(nn.Module):
     def save_model(self, args, epoch1=None, epoch2=None):
         #kaggle
         out_dir = '/kaggle/working/ALLMREC/pre_train/sasrec/saved_models/'
-        create_dir(out_dir)
-        out_dir += f'yelp_allmrec_{epoch1}/'
         # if not os.path.exists(out_dir):
         #     os.makedirs(out_dir)
         # #colab
@@ -110,12 +108,16 @@ class A_llmrec_model(nn.Module):
         # create_dir(out_dir)
         # out_dir += f'yelp_allmrec_{epoch1}_'
         if args.pretrain_stage1:
+            out_dir += f'yelp_allmrec_{epoch1}/'
+            create_dir(out_dir)
             torch.save(self.sbert.state_dict(), out_dir + 'sbert.pt')
             torch.save(self.mlp.state_dict(), out_dir + 'mlp.pt')
             torch.save(self.mlp2.state_dict(), out_dir + 'mlp2.pt') 
         
-        out_dir += f'{args.llm}_{epoch2}_'
+        out_dir += f'{args.llm}_{epoch2}/'
         if args.pretrain_stage2:
+            out_dir += f'{args.llm}_{epoch2}/'
+            create_dir(out_dir)
             torch.save(self.log_emb_proj.state_dict(), out_dir + 'log_proj.pt')
             torch.save(self.item_emb_proj.state_dict(), out_dir + 'item_proj.pt')
             
