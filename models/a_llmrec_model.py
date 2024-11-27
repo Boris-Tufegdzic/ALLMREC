@@ -401,7 +401,8 @@ class A_llmrec_model(nn.Module):
                 attention_mask = llm_tokens.attention_mask
                 inputs_embeds = torch.cat([log_emb, inputs_embeds], dim=1)
                 attention_mask = torch.cat([atts_llm, llm_tokens.attention_mask], dim=1)
-                    
+                
+                print("llm is generating ...")
                 outputs = self.llm.llm_model.generate(
                     inputs_embeds=inputs_embeds,
                     attention_mask=attention_mask,
@@ -422,7 +423,8 @@ class A_llmrec_model(nn.Module):
             output_text = [text.strip() for text in output_text]
 
         for i in range(len(text_input)):
-            f = open(f'./recommendation_output.txt','a')
+            f = open(f'/kaggle/working/ALLMREC/recommendation_output.txt','a')
+            #f = open(f'./recommendation_output.txt','a')
             f.write(text_input[i])
             f.write('\n\n')
             
