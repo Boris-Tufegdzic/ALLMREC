@@ -342,7 +342,8 @@ class A_llmrec_model(nn.Module):
         loss_rm.backward()
         optimizer.step()
         mean_loss += loss_rm.item()
-        print("A-LLMRec model loss in epoch {}/{} iteration {}/{}: {}".format(epoch, total_epoch, step, total_step, mean_loss))
+        if step%100 == 0:
+            print("A-LLMRec model loss in epoch {}/{} iteration {}/{}: {}".format(epoch, total_epoch, step, total_step, mean_loss))
         
     def generate(self, data):
         u, seq, pos, neg, rank = data
