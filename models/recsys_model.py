@@ -14,9 +14,10 @@ from pre_train.sasrec.model import SASRec
 
 def load_checkpoint(recsys, pre_trained):
     # # For kaggle
-    base_dir = '/kaggle/working/ALLMREC/'
-    #path = base_dir + f'pre_train/{recsys}/{pre_trained}/'
-    path = base_dir + "pre_train/sasrec/saved_models/"
+    #base_dir = '/kaggle/working/ALLMREC/'
+    #path = base_dir + "pre_train/sasrec/saved_models/"
+    base_dir = '/kaggle/input/sasrec/saved_models/'
+
     
     pth_file_path = find_filepath(path, '.pth')
     assert len(pth_file_path) == 1, 'There are more than two models in this dir. You need to remove other model files.\n'
