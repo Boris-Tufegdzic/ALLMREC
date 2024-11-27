@@ -16,7 +16,7 @@ def load_checkpoint(recsys, pre_trained):
     # # For kaggle
     #base_dir = '/kaggle/working/ALLMREC/'
     #path = base_dir + "pre_train/sasrec/saved_models/"
-    base_dir = '/kaggle/input/sasrec/saved_models/'
+    path = '/kaggle/input/sasrec/saved_models/'
 
     
     pth_file_path = find_filepath(path, '.pth')
