@@ -167,8 +167,8 @@ def inference_(rank, world_size, args):
     print('average sequence length: %.2f' % (cc / len(user_train)))
     model.eval()
     
-    if usernum>10000:
-        users = random.sample(range(1, usernum + 1), 10000)
+    if usernum>500:
+        users = random.sample(range(1, usernum + 1), 100)
     else:
         users = range(1, usernum + 1)
     
