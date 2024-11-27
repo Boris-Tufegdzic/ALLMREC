@@ -136,7 +136,8 @@ class A_llmrec_model(nn.Module):
             param.requires_grad = False
 
         if args.inference:
-            out_dir += f'{args.llm}_{phase2_epoch}_'
+            out_dir = f'/kaggle/input/phase2/'
+            out_dir += f'{args.llm}_{phase2_epoch}/'
             
             log_emb_proj_dict = torch.load(out_dir + 'log_proj.pt', map_location = args.device)
             self.log_emb_proj.load_state_dict(log_emb_proj_dict)
