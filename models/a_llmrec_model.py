@@ -123,7 +123,7 @@ class A_llmrec_model(nn.Module):
             
     def load_model(self, args, phase1_epoch=None, phase2_epoch=None):
         #kaggle
-        out_dir = f'/kaggle/input/phase1/yelp_allmrec_{phase1_epoch}/'
+        out_dir = f'/kaggle/input/phase1_1/yelp_allmrec_{phase1_epoch}/'
         #out_dir = f'/kaggle/working/ALLMREC/pre_train/sasrec/saved_models/yelp_allmrec_{phase1_epoch}/'
         #out_dir = f'./models/saved_models/yelp_allmrec_{phase1_epoch}_'
         #out_dir = f'/content/drive/MyDrive/saved_models/allmrec/yelp_allmrec_{phase1_epoch}_'
