@@ -154,7 +154,7 @@ def inference_(rank, world_size, args):
         
     model = A_llmrec_model(args).to(args.device)
     phase1_epoch = 10
-    phase2_epoch = 5
+    phase2_epoch = 1
     model.load_model(args, phase1_epoch=phase1_epoch, phase2_epoch=phase2_epoch)
 
     dataset = data_partition(args.rec_pre_trained_data, path=f'./data/amazon/{args.rec_pre_trained_data}.txt')
