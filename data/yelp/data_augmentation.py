@@ -4,19 +4,24 @@ import json
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
+
 def stream_businesses(file_path):
     with open(file_path, "r") as f:
         for line in f:
+            line = line.strip()  # Remove leading/trailing whitespace
+            if not line:  # Skip empty lines
+                continue
             try:
-                business = ijson.parse(line)
+                business = json.loads(line)  # Parse each line as a JSON object
                 yield {
-                "business_id": business["business_id"],
-                "name": business["name"],
-                "categories": business.get("categories"),
-                "attributes": business.get("attributes"),
-            }
-            except ijson.common.JSONError as e:
-                print(f"Error parsing line: {line}\n{e}")
+                    "business_id": business["business_id"],
+                    "name": business["name"],
+                    "categories": business.get("categories"),
+                    "attributes": business.get("attributes"),
+                }
+            except json.JSONDecodeError as e:
+                # Log or print the error for debugging and skip the problematic line
+                print(f"Skipping line due to JSONDecodeError: {e}")
 
 def find_most_useful_review(reviews_file, business_id):
     most_useful = None
