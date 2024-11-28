@@ -23,17 +23,27 @@ def stream_businesses(file_path):
                 # Log or print the error for debugging and skip the problematic line
                 print(f"Skipping line due to JSONDecodeError: {e}")
 
+
 def find_most_useful_review(reviews_file, business_id):
     most_useful = None
     with open(reviews_file, "r") as f:
-        for review in ijson.items(f, "item"):
-            if review["business_id"] == business_id:
-                if not most_useful or review["useful"] > most_useful["useful"]:
-                    most_useful = {
-                        "text": review["text"],
-                        "useful": review["useful"],
-                    }
+        for line in f:
+            line = line.strip()  # Remove leading/trailing whitespace
+            if not line:  # Skip empty lines
+                continue
+            try:
+                review = json.loads(line)  # Parse each line as a JSON object
+                if review["business_id"] == business_id:
+                    if not most_useful or review["useful"] > most_useful["useful"]:
+                        most_useful = {
+                            "text": review["text"],
+                            "useful": review["useful"],
+                        }
+            except json.JSONDecodeError as e:
+                # Log or print the error for debugging and skip the problematic line
+                print(f"Skipping line due to JSONDecodeError: {e}")
     return most_useful
+
 
 def generate_description(prompt_template, model, tokenizer, device="cpu", max_length=100):
     input_ids = tokenizer(prompt_template, return_tensors="pt").input_ids.to(device)
