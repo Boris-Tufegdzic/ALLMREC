@@ -66,11 +66,11 @@ def process_businesses(business_file, reviews_file, output_file, model, tokenize
         else:
             prompt = (
                 "Write a concise and informative description for a business based on the following information.\n"
-                f"Business Name: {business['name']}\n"
+                #f"Business Name: {business['name']}\n"
                 f"Categories: {business['categories']}\n"
                 f"Attributes: {business.get('attributes', 'None')}\n"
                 f"Customer Feedback: {most_useful_review['text']}\n"
-                f"Business Description:"
+                f"Business Description: "
             )
             description = generate_description(prompt, model, tokenizer, device)
         business["description"] = description
