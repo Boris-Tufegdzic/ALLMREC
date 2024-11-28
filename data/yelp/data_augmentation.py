@@ -88,7 +88,7 @@ def main():
     output_file = "/kaggle/working/ALLMREC/data/yelp/philadelphia_businesses_augmented.json"
 
     # Load model and tokenizer
-    model_name = "facebook/opt-1.3b"
+    model_name = "facebook/opt-6.7b"
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForCausalLM.from_pretrained(model_name).to("cuda" if torch.cuda.is_available() else "cpu")
 
