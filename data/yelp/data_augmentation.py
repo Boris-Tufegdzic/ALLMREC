@@ -6,13 +6,17 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 def stream_businesses(file_path):
     with open(file_path, "r") as f:
-        for business in ijson.items(f, "item"):
-            yield {
+        for line in f:
+            try:
+                business = ijson.parse(line)
+                yield {
                 "business_id": business["business_id"],
                 "name": business["name"],
                 "categories": business.get("categories"),
                 "attributes": business.get("attributes"),
             }
+            except ijson.common.JSONError as e:
+                print(f"Error parsing line: {line}\n{e}")
 
 def find_most_useful_review(reviews_file, business_id):
     most_useful = None
