@@ -3,6 +3,9 @@ import torch
 import json
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import BitsAndBytesConfig
+
+
 
 
 def stream_businesses(file_path):
@@ -90,7 +93,10 @@ def main():
     # Load model and tokenizer
     model_name = "facebook/opt-6.7b"
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name).to("cuda" if torch.cuda.is_available() else "cpu")
+    bnb_config = BitsAndBytesConfig(load_in_8bit=True)
+    model = AutoModelForCausalLM.from_pretrained(model_name, quantization_config=bnb_config).to("cuda" if torch.cuda.is_available() else "cpu")
+
+    #model = AutoModelForCausalLM.from_pretrained(model_name).to("cuda" if torch.cuda.is_available() else "cpu")
 
     # Process businesses
     print("Processing businesses...")
