@@ -85,7 +85,7 @@ def process_businesses(business_file, reviews_file, output_file, model, tokenize
 def main():
     business_file = "/kaggle/input/yelpdata4/philadelphia/philadelphia_businesses.json"
     reviews_file = "/kaggle/input/yelpdata4/philadelphia/philadelphia_reviews.json"
-    output_file = "/kaggle/working/ALLMREC/data/yelp/philadelphia/philadelphia_businesses_augmented.json"
+    output_file = "/kaggle/working/ALLMREC/data/yelp/philadelphia_businesses_augmented.json"
 
     # Load model and tokenizer
     model_name = "facebook/opt-1.3b"
