@@ -47,7 +47,7 @@ def find_most_useful_review(reviews_file, business_id):
 
 def generate_description(prompt_template, model, tokenizer, device="cpu", max_length=100):
     input_ids = tokenizer(prompt_template, return_tensors="pt").input_ids.to(device)
-    output = model.generate(input_ids, max_length=max_length, do_sample=True, top_p=0.9, temperature=0.7)
+    output = model.generate(input_ids, max_new_tokens=max_length, do_sample=True, top_p=0.9, temperature=0.7)
     return tokenizer.decode(output[0], skip_special_tokens=True)
 
 def process_businesses(business_file, reviews_file, output_file, model, tokenizer, device, subset_size=None):
@@ -62,7 +62,7 @@ def process_businesses(business_file, reviews_file, output_file, model, tokenize
             description = "No useful reviews available."
         else:
             prompt = (
-                "You are a content writer. Write a concise and informative description for a business based on the following information.\n"
+                "Write a concise and informative description for a business based on the following information.\n"
                 f"Business Name: {business['name']}\n"
                 f"Categories: {business['categories']}\n"
                 f"Attributes: {business.get('attributes', 'None')}\n"
