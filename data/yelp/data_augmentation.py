@@ -2,7 +2,7 @@ import ijson
 import torch
 import json
 from tqdm import tqdm
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, OPTForCausalLM
 from transformers import BitsAndBytesConfig
 
 
@@ -92,9 +92,19 @@ def main():
 
     # Load model and tokenizer
     model_name = "facebook/opt-6.7b"
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    bnb_config = BitsAndBytesConfig(load_in_8bit=True)
-    model = AutoModelForCausalLM.from_pretrained(model_name, quantization_config=bnb_config).to("cuda" if torch.cuda.is_available() else "cpu")
+    model = OPTForCausalLM.from_pretrained(
+    model_name,
+    torch_dtype=torch.float16,  # Needed for parts not in 8-bit
+    load_in_8bit=True,         # Enables 8-bit quantization
+    device_map="auto"          # Automatically maps model layers to devices
+    )
+
+    # Load the tokenizer (use fast version for better performance)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
+
+    # tokenizer = AutoTokenizer.from_pretrained(model_name)
+    # bnb_config = BitsAndBytesConfig(load_in_8bit=True)
+    # model = AutoModelForCausalLM.from_pretrained(model_name, quantization_config=bnb_config).to("cuda" if torch.cuda.is_available() else "cpu")
 
     #model = AutoModelForCausalLM.from_pretrained(model_name).to("cuda" if torch.cuda.is_available() else "cpu")
 
