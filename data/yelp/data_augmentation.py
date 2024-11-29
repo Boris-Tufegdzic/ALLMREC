@@ -64,13 +64,18 @@ def process_businesses(business_file, reviews_file, output_file, model, tokenize
         if not most_useful_review:
             description = "No useful reviews available."
         else:
+            # prompt = (
+            #     "Write a concise and informative description for a business based on the following information.\n"
+            #     #f"Business Name: {business['name']}\n"
+            #     f"Categories: {business['categories']}\n"
+            #     f"Attributes: {business.get('attributes', 'None')}\n"
+            #     f"Customer Feedback: {most_useful_review['text']}\n"
+            #     f"Business Description: "
+            # )
             prompt = (
-                "Write a concise and informative description for a business based on the following information.\n"
-                #f"Business Name: {business['name']}\n"
-                f"Categories: {business['categories']}\n"
-                f"Attributes: {business.get('attributes', 'None')}\n"
-                f"Customer Feedback: {most_useful_review['text']}\n"
-                f"Business Description: "
+                f"{business['name']} belongs to the following categories : {business['categories']}. "
+                f"Here is a review of {business['name']} : {most_useful_review['text']}. "
+                f"Now let's write a concise, professional, and informative description of this business. {business['name']} is "
             )
             description = generate_description(prompt, model, tokenizer, device)
         business["description"] = description
