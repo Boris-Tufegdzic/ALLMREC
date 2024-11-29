@@ -1,9 +1,7 @@
 import torch
 import json
 from tqdm import tqdm
-from transformers import AutoTokenizer, OPTForCausalLM
-from transformers import BitsAndBytesConfig
-
+from transformers import pipeline
 
 
 
@@ -46,88 +44,8 @@ def find_most_useful_review(reviews_file, business_id):
                 print(f"Skipping line due to JSONDecodeError: {e}")
     return most_useful
 
-
-# def generate_description(prompt_template, model, tokenizer, device="cpu", max_length=100):
-#     input_ids = tokenizer(prompt_template, return_tensors="pt").input_ids.to(device)
-#     output = model.generate(input_ids, max_new_tokens=max_length, do_sample=True, top_p=0.9, temperature=0.7)
-#     return tokenizer.decode(output[0], skip_special_tokens=True)
-
-# def process_businesses(business_file, reviews_file, output_file, model, tokenizer, device, subset_size=None):
-#     processed = []
-#     business_generator = stream_businesses(business_file)
-    
-#     for i, business in enumerate(tqdm(business_generator)):
-#         if subset_size and i >= subset_size:
-#             break
-#         most_useful_review = find_most_useful_review(reviews_file, business["business_id"])
-#         if not most_useful_review:
-#             description = "No useful reviews available."
-#         else:
-#             # prompt = (
-#             #     "Write a concise and informative description for a business based on the following information.\n"
-#             #     #f"Business Name: {business['name']}\n"
-#             #     f"Categories: {business['categories']}\n"
-#             #     f"Attributes: {business.get('attributes', 'None')}\n"
-#             #     f"Customer Feedback: {most_useful_review['text']}\n"
-#             #     f"Business Description: "
-#             # )
-#             prompt = (
-#                 f"{business['name']} belongs to the following categories : {business['categories']}. "
-#                 f"Here is a review of {business['name']} : {most_useful_review['text']}. "
-#                 f"Now let's write a concise, professional, and informative description of this business. {business['name']} is "
-#             )
-#             description = generate_description(prompt, model, tokenizer, device)
-#         business["description"] = description
-#         processed.append(business)
-        
-#         # Write in chunks to avoid losing progress
-#         if i % 100 == 0:
-#             with open(output_file, "w") as f:
-#                 json.dump(processed, f, indent=4)
-
-#     # Final save
-#     with open(output_file, "w") as f:
-#         json.dump(processed, f, indent=4)
-
-# def main():
-#     business_file = "/kaggle/input/yelpdata4/philadelphia/philadelphia_businesses.json"
-#     reviews_file = "/kaggle/input/yelpdata4/philadelphia/philadelphia_reviews.json"
-#     output_file = "/kaggle/working/ALLMREC/data/yelp/philadelphia_businesses_augmented.json"
-
-#     # Load model and tokenizer
-#     model_name = "facebook/opt-6.7b"
-#     model = OPTForCausalLM.from_pretrained(
-#     model_name,
-#     torch_dtype=torch.float16,  # Needed for parts not in 8-bit
-#     load_in_8bit=True,         # Enables 8-bit quantization
-#     device_map="auto"          # Automatically maps model layers to devices
-#     )
-
-#     # Load the tokenizer (use fast version for better performance)
-#     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-
-#     # tokenizer = AutoTokenizer.from_pretrained(model_name)
-#     # bnb_config = BitsAndBytesConfig(load_in_8bit=True)
-#     # model = AutoModelForCausalLM.from_pretrained(model_name, quantization_config=bnb_config).to("cuda" if torch.cuda.is_available() else "cpu")
-
-#     #model = AutoModelForCausalLM.from_pretrained(model_name).to("cuda" if torch.cuda.is_available() else "cpu")
-
-#     # Process businesses
-#     print("Processing businesses...")
-#     process_businesses(
-#         business_file,
-#         reviews_file,
-#         output_file,
-#         model,
-#         tokenizer,
-#         device="cuda" if torch.cuda.is_available() else "cpu",
-#         subset_size=10  # Remove or increase to process all businesses
-#     )
-
-from transformers import pipeline
-
 # Load Llama-3.2-1B
-model_id = "meta-llama/Llama-3.2-1B"
+model_id = "meta-llama/Llama-3.2-3B"
 pipe = pipeline(
     "text-generation", 
     model=model_id, 
@@ -163,13 +81,11 @@ def process_businesses(business_file, reviews_file, output_file, pipe, subset_si
         if not most_useful_review:
             description = "No useful reviews available."
         else:
-            # Craft the prompt
             prompt = (
                 f"{business['name']} belongs to the following categories: {business['categories']}. "
                 f"Here is a review of {business['name']}: {most_useful_review['text']}. "
                 f"Let's write a concise and informative description of this business. {business['name']} is "
             )
-            # Generate the description
             description = generate_description(prompt, pipe)
             # Strip the prompt from the response
             description = description.replace(prompt, "").strip()
