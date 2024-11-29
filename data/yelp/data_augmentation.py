@@ -199,7 +199,7 @@ def main():
         reviews_file=reviews_file,
         output_file=output_file,
         pipe=pipe,
-        subset_size=100  # Test on a smaller subset
+        subset_size=10  # Test on a smaller subset
     )
 
 
