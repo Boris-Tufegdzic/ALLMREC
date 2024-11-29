@@ -189,9 +189,9 @@ def process_businesses(business_file, reviews_file, output_file, pipe, subset_si
 
 def main():
     # Run the pipeline
-    business_file = "philadelphia_businesses.json"
-    reviews_file = "philadelphia_reviews.json"
-    output_file = "output_businesses.json"
+    business_file = "/kaggle/input/yelpdata4/philadelphia/philadelphia_businesses.json"
+    reviews_file = "/kaggle/input/yelpdata4/philadelphia/philadelphia_reviews.json"
+    output_file = "/kaggle/working/ALLMREC/data/yelp/philadelphia_businesses_augmented.json"
 
     print("Processing businesses...")
     process_businesses(
