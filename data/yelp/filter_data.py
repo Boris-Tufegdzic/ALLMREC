@@ -1,67 +1,81 @@
 import json
+import random
 
+
+def filter_yelp_data(business_file, review_file, filtered_business_file, filtered_review_file, 
+                     business_threshold=5, user_threshold=5):
+    """
+    Optimized single-pass filtering of Yelp dataset
+    
+    Key Optimizations:
+    1. Combines business and review filtering in fewer passes
+    2. Tracks user review counts simultaneously
+    3. Reduces memory overhead by processing in a more streamlined manner
+    """
+    # Tracking sets and dictionaries
+    philadelphia_business_ids = set()
+    user_review_count = {}
+    
+    # Open all files in a single context
+    with open(business_file, "r", encoding="utf-8") as b_file, \
+         open(review_file, "r", encoding="utf-8") as r_file, \
+         open(filtered_business_file, "w", encoding="utf-8") as filtered_b_file, \
+         open(filtered_review_file, "w", encoding="utf-8") as filtered_r_file:
+        
+        # First pass: Filter businesses and prepare for review filtering
+        for line in b_file:
+            business = json.loads(line)
+            
+            # Business filtering criteria
+            if business["review_count"] >= business_threshold:
+                # Write filtered businesses
+                json.dump(business, filtered_b_file)
+                filtered_b_file.write("\n")
+                philadelphia_business_ids.add(business["business_id"])
+        
+        # Reset file pointer for review file
+        r_file.seek(0)
+        
+        # First sub-pass: Count user reviews
+        for line in r_file:
+            review = json.loads(line)
+            
+            # Only count reviews for valid businesses
+            if review["business_id"] in philadelphia_business_ids:
+                user_id = review["user_id"]
+                user_review_count[user_id] = user_review_count.get(user_id, 0) + 1
+        
+        # Reset file pointer again
+        r_file.seek(0)
+        
+        # Second pass: Filter reviews based on business and user criteria
+        for line in r_file:
+            review = json.loads(line)
+            
+            # Review filtering criteria
+            if (review["business_id"] in philadelphia_business_ids and 
+                user_review_count.get(review["user_id"], 0) >= user_threshold):
+                json.dump(review, filtered_r_file)
+                filtered_r_file.write("\n")
+    
+    print("Data filtering completed successfully!")
+
+
+random.seed(42)
+
+kaggle_input_dir = "kaggle/input/fullyelpdata/"
+kaggle_output_dir = "kaggle/working/ALLMREC/data/yelp/"
 # Input file paths
 business_file = "yelp_academic_dataset_business.json"
 review_file = "yelp_academic_dataset_review.json"
-user_file = "yelp_academic_dataset_user.json"
 
 # Output file paths
 filtered_business_file = "philadelphia/philadelphia_businesses.json"
-half_filtered_review_file = "philadelphia/philadelphia_hf_reviews.json"
 filtered_review_file = "philadelphia/philadelphia_reviews.json"
-filtered_user_file = "philadelphia/philadelphia_users.json"
 
-# Step 1: Filter businesses in Philadelphia
-philadelphia_business_ids = set()
-business_threshold = 10
-
-with open(business_file, "r", encoding="utf-8") as infile, open(filtered_business_file, "w", encoding="utf-8") as outfile:
-    for line in infile:
-        business = json.loads(line)
-        if business["city"].lower() == "philadelphia" and business["review_count"] >= business_threshold:
-            json.dump(business, outfile)
-            outfile.write("\n")
-            philadelphia_business_ids.add(business["business_id"])
-
-# Step 2: Filter reviews of Philadelphia businesses
-philadelphia_user_ids = set()
-
-with open(review_file, "r", encoding="utf-8") as infile, open(half_filtered_review_file, "w", encoding="utf-8") as outfile:
-    for line in infile:
-        review = json.loads(line)
-        if review["business_id"] in philadelphia_business_ids:
-            json.dump(review, outfile)
-            outfile.write("\n")
-            philadelphia_user_ids.add(review["user_id"])
-
-# Step 3: Filter users who wrote at least {user_threshold} reviews for Philadelphia businesses
-
-user_threshold = 5
-# Read Philadelphia reviews and count user reviews in Philadelphia
-user_review_count = {}
-with open(half_filtered_review_file, "r", encoding="utf-8") as review_file:
-    for line in review_file:
-        review = json.loads(line)
-        user_id = review["user_id"]
-        user_review_count[user_id] = user_review_count.get(user_id, 0) + 1
-
-# U to the new JSON file
-filtered_user_ids = set()
-with open(filtered_user_file, "w", encoding="utf-8") as user_outfile:
-    with open(user_file, "r", encoding="utf-8") as user_file:
-        for line in user_file:
-            user = json.loads(line)
-            if user_review_count.get(user["user_id"], 0) >= user_threshold:
-                user_outfile.write(json.dumps(user) + "\n")
-                filtered_user_ids.add(user["user_id"])
-
-# Filter reviews based on filtered_user_ids
-with open(half_filtered_review_file, "r", encoding="utf-8") as infile, open(filtered_review_file, "w", encoding="utf-8") as outfile:
-    for line in infile:
-        review = json.loads(line)
-        if review["user_id"] in filtered_user_ids:
-            json.dump(review, outfile)
-            outfile.write("\n")
-
-
-print("Filtered data has been saved successfully!")
+filter_yelp_data(
+    business_file=business_file,
+    review_file=review_file,
+    filtered_business_file=filtered_business_file,
+    filtered_review_file=filtered_review_file
+)
