@@ -113,9 +113,9 @@ def preprocess(fname):
         split_index = int(len(interactions) * 0.8)
         
         for i in interactions[:split_index]:
-            f_train.write('%d %d 1\n' % (user, i[1]))
+            f_train.write('%s %s 1\n' % (user, i[1]))
         
         for i in interactions[split_index:]:
-            f_test.write('%d %d 1\n' % (user, i[1]))
+            f_test.write('%s %s 1\n' % (user, i[1]))
     f_train.close()
     f_test.close()
