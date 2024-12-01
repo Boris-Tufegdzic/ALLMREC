@@ -52,7 +52,11 @@ def preprocess(fname):
             #     itemmap[business] = businessid
 
             #User[userid].append([time, businessid])
-            User[user].append([time, business])
+            if user in User.keys():
+                User[user].append([time, business])
+            else:
+                User[user] = []
+                User[user].append([time, business])
 
             # if itemmap[business] in review_dict:
             #     try:
