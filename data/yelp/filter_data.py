@@ -63,15 +63,15 @@ def filter_yelp_data(business_file, review_file, filtered_business_file, filtere
 
 random.seed(42)
 
-kaggle_input_dir = "kaggle/input/fullyelpdata/fullyelpdata/"
-kaggle_output_dir = "kaggle/working/ALLMREC/data/yelp/"
+kaggle_input_dir = "/kaggle/input/fullyelpdata/fullyelpdata/"
+kaggle_output_dir = "/kaggle/working/ALLMREC/data/yelp/"
 # Input file paths
 business_file = kaggle_input_dir + "yelp_academic_dataset_business.json"
 review_file = kaggle_input_dir + "yelp_academic_dataset_review.json"
 
 # Output file paths
 filtered_business_file = kaggle_output_dir + "filtered/filtered_businesses.json"
-filtered_review_file = kaggle_output_dir + "filtered_data/filtered_reviews.json"
+filtered_review_file = kaggle_output_dir + "filtered/filtered_reviews.json"
 
 filter_yelp_data(
     business_file=business_file,
