@@ -45,7 +45,7 @@ def find_most_useful_review(reviews_file, business_id):
     return most_useful
 
 # Load Llama-3.2-1B
-model_id = "meta-llama/Llama-3.2-3B"
+model_id = "meta-llama/Llama-3.2-3B-Instruct"
 pipe = pipeline(
     "text-generation", 
     model=model_id, 
@@ -57,8 +57,12 @@ def generate_description(prompt, pipe, max_new_tokens=150, top_p=0.9, temperatur
     """
     Generates a description using the specified Llama pipeline.
     """
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant that extracts objective information from reviews."},
+        {"role": "user", "content": prompt},
+    ]
     response = pipe(
-        prompt, 
+        messages, 
         max_new_tokens=max_new_tokens, 
         top_p=top_p, 
         temperature=temperature
@@ -82,13 +86,11 @@ def process_businesses(business_file, reviews_file, output_file, pipe, subset_si
             description = "No useful reviews available."
         else:
             prompt = (
-                f"{business['name']} belongs to the following categories: {business['categories']}. "
-                f"Here is a review of {business['name']}: {most_useful_review['text']}. "
-                f"Let's write a concise and informative description of this business. {business['name']} is "
+                f"Extract the objective information from the following text: {most_useful_review['text']}."
             )
             description = generate_description(prompt, pipe)
             # Strip the prompt from the response
-            description = description.replace(prompt, "").strip()
+            #description = description.replace(prompt, "").strip()
         
         # Add the description to the business entry
         business["description"] = description
