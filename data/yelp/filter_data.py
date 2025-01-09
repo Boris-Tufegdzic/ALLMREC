@@ -3,14 +3,13 @@ import random
 import os
 
 def filter_yelp_data(business_file, review_file, filtered_business_file, filtered_review_file, 
-                     business_threshold=5, user_threshold=5):
+                     business_threshold=50, user_threshold=10):
     """
     Optimized single-pass filtering of Yelp dataset
     
     Key Optimizations:
-    1. Combines business and review filtering in fewer passes
+    1. Combines business and review filtering 
     2. Tracks user review counts simultaneously
-    3. Reduces memory overhead by processing in a more streamlined manner
     """
     # Tracking sets and dictionaries
     philadelphia_business_ids = set()
@@ -75,9 +74,10 @@ review_file = kaggle_input_dir + "yelp_academic_dataset_review.json"
 filtered_business_file = kaggle_output_dir + "filtered_businesses.json"
 filtered_review_file = kaggle_output_dir + "filtered_reviews.json"
 
+
 filter_yelp_data(
     business_file=business_file,
     review_file=review_file,
     filtered_business_file=filtered_business_file,
-    filtered_review_file=filtered_review_file
+    filtered_review_file=filtered_review_file,
 )
