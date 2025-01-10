@@ -54,7 +54,8 @@ def filter_yelp_data(business_file, review_file, filtered_business_file, filtere
             
             # Review filtering criteria
             if (review["business_id"] in philadelphia_business_ids and 
-                user_review_count.get(review["user_id"], 0) >= user_threshold):
+                user_review_count.get(review["user_id"], 0) >= user_threshold
+                and review["stars"] >= 3.0):
                 json.dump(review, filtered_r_file)
                 filtered_r_file.write("\n")
     
