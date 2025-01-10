@@ -14,6 +14,7 @@ def filter_yelp_data(business_file, review_file, filtered_business_file, filtere
     # Tracking sets and dictionaries
     philadelphia_business_ids = set()
     user_review_count = {}
+    cities = ["Philadelphia", "New Orleans", "Nashville", "Reno"]
     
     # Open all files in a single context
     with open(business_file, "r", encoding="utf-8") as b_file, \
@@ -26,7 +27,7 @@ def filter_yelp_data(business_file, review_file, filtered_business_file, filtere
             business = json.loads(line)
             
             # Business filtering criteria
-            if business["review_count"] >= business_threshold:
+            if business["review_count"] >= business_threshold and business["city"] in cities:
                 # Write filtered businesses
                 json.dump(business, filtered_b_file)
                 filtered_b_file.write("\n")
